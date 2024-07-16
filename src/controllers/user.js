@@ -1,0 +1,103 @@
+const userService = require('../services/user');
+const { validationResult } = require('express-validator');
+const createError = require('http-errors');
+
+const criar = async function(req, res, next) {
+    try {
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {
+            throw createError(422, { errors: errors.array() })
+        }
+
+        const response = await userService.criar(req.body);
+
+        if(response && response.message) {
+            throw response;
+        }
+        
+        res.send(response);
+    } catch(error) {
+        return next(error);
+    }
+}
+
+const atualizar = async function(req, res, next) {
+    try {
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {
+            throw createError(422, { errors: errors.array() })
+        }
+
+        const response = await userService.atualizar({
+            login: req.body.login
+        }, req.params.id);
+
+        if(response && response.message) {
+            throw response;
+        }
+
+        res.send(response);
+    } catch (error) {
+        return next(error);
+    }
+}
+
+const encontrarTodos = async function(req, res, next) {
+    try {
+        const response = await userService.encontrarTodos(req.body);
+
+        res.send(response);
+    } catch (error) {
+        return next(error);
+    }
+}
+
+const encontrarPorId = async function(req, res, next) {
+    try {
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {
+            throw createError(422, { errors: errors.array() })
+        }
+        
+        const response = await userService.encontrarPorId(req.params.id);
+
+        if(response && response.message) {
+            throw response;
+        }
+
+        res.send(response);
+    } catch (error) {
+        return next(error);
+    }
+}
+
+const deletar = async function(req, res, next) {
+    try {
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {
+            throw createError(422, { errors: errors.array() })
+        }
+        
+        const response = await userService.deletar(req.params.id);
+
+        if(response && response.message) {
+            throw response;
+        }
+
+        res.send(response);
+    } catch (error) {
+        return next(error);
+    }
+}
+
+module.exports = {
+    criar: criar, 
+    atualizar: atualizar,
+    encontrarTodos: encontrarTodos,
+    encontrarPorId: encontrarPorId,
+    deletar: deletar
+}
