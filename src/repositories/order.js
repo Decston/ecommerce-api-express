@@ -19,7 +19,13 @@ const encontrarTodos = async function() {
             { 
                 model: Customer, 
                 as: 'customer', 
-                attributes: { exclude: ['cd_customer'] } 
+                attributes: { exclude: [ 'cd_customer', 'cd_user' ] },
+                include: [
+                    {
+                        model: User,
+                        as: 'user'
+                    }
+                ]
             },
             { 
                 model: Product, 
@@ -30,6 +36,7 @@ const encontrarTodos = async function() {
                     {
                         model: Seller,
                         as: 'seller',
+                        attributes: { exclude: [ 'cd_user' ] },
                         include: [
                             {
                                 model: User,
