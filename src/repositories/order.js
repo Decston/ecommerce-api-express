@@ -1,5 +1,5 @@
 const { where } = require('sequelize');
-const { Order, Customer, Product, Seller } = require('../database/models/index');
+const { Order, Customer, Product, Seller, Category } = require('../database/models/index');
 
 const criar = async function(order) {
     const orderCriado = await Order.create(order);
@@ -25,11 +25,15 @@ const encontrarTodos = async function() {
                 model: Product, 
                 as: 'products', 
                 through: { attributes: [] },
-                attributes: { exclude: ['cd_seller'] },
+                attributes: { exclude: [ 'cd_seller', 'cd_category' ] },
                 include: [
                     {
                         model: Seller,
                         as: 'seller'
+                    },
+                    {
+                        model: Category,
+                        as: 'category'
                     }
                 ]
             }
