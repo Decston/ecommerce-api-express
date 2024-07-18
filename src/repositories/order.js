@@ -1,5 +1,5 @@
 const { where } = require('sequelize');
-const { Order, Customer, Product } = require('../database/models/index');
+const { Order, Customer, Product, Seller } = require('../database/models/index');
 
 const criar = async function(order) {
     const orderCriado = await Order.create(order);
@@ -16,8 +16,23 @@ const encontrarTodos = async function() {
     const orders = await Order.findAll({
         attributes: { exclude: ['cd_customer'] },
         include: [
-            { model: Customer, as: 'customer', attributes: { exclude: ['cd_customer'] } },
-            { model: Product, as: 'products', through: { attributes: [] } }
+            { 
+                model: Customer, 
+                as: 'customer', 
+                attributes: { exclude: ['cd_customer'] } 
+            },
+            { 
+                model: Product, 
+                as: 'products', 
+                through: { attributes: [] },
+                attributes: { exclude: ['cd_seller'] },
+                include: [
+                    {
+                        model: Seller,
+                        as: 'seller'
+                    }
+                ]
+            }
         ],
     });
     return orders;

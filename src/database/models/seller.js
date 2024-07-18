@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Seller.belongsTo(models.User, { foreignKey: 'cd_user' })
+      Seller.hasOne(models.Product, { foreignKey: 'cd_seller', as: 'product' })
     }
   }
   Seller.init({
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     address: {
       type: DataTypes.STRING,
       allowNull: false,
-      field: 'ds_address'
+      field: 'ds_endereco'
     },
     phone: {
       type: DataTypes.INTEGER,
