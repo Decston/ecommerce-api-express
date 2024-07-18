@@ -1,5 +1,5 @@
 const { where } = require('sequelize');
-const { Order, Customer, Product, Seller, Category } = require('../database/models/index');
+const { Order, Customer, Product, Seller, Category, User } = require('../database/models/index');
 
 const criar = async function(order) {
     const orderCriado = await Order.create(order);
@@ -29,7 +29,13 @@ const encontrarTodos = async function() {
                 include: [
                     {
                         model: Seller,
-                        as: 'seller'
+                        as: 'seller',
+                        include: [
+                            {
+                                model: User,
+                                as: 'user'
+                            }
+                        ]
                     },
                     {
                         model: Category,

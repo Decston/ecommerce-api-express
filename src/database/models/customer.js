@@ -35,11 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       field: 'ds_email'
-    },
-    cdUser: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      field: 'cd_user'
     }
   }, {
     sequelize,
